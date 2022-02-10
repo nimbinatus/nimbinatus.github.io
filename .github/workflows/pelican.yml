@@ -26,6 +26,9 @@ jobs:
         touch ./output/.nojekyll
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@v4.2.3
+      with:
+        branch: master
+        folder: output
       if: success()
       env:
         ACCESS_TOKEN: ${{ secrets.GH_PAT }}
