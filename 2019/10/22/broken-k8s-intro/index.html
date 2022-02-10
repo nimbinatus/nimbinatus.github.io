@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/solid.css">
+
+
+    <link href="https://nimbinatus.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yet Another Blog Atom">
+
+
+    <link rel="shortcut icon" href="https://nimbinatus.com/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://nimbinatus.com/static/favicon.ico" type="image/x-icon">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-150583051-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-150583051-1');
+</script>
+<!-- End GA -->
+
+<meta name="author" content="Laura Santamaria" />
+<meta name="description" content="One of the most common things I see with people new to development or devops is a lack of resources for them to learn good troubleshooting tactics on their own in a near-real-life environment. There are great tutorials, but I haven&#39;t been able to find a good, free sandbox filled …" />
+<meta name="keywords" content="kubernetes, experiment, teaching">
+
+<meta property="og:site_name" content="Yet Another Blog"/>
+<meta property="og:title" content="Introducing the Broken k8s Project"/>
+<meta property="og:description" content="One of the most common things I see with people new to development or devops is a lack of resources for them to learn good troubleshooting tactics on their own in a near-real-life environment. There are great tutorials, but I haven&#39;t been able to find a good, free sandbox filled …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://nimbinatus.com/2019/10/22/broken-k8s-intro/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-10-22 00:00:00-05:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://nimbinatus.com/author/laura-santamaria.html">
+<meta property="article:section" content="k8s"/>
+<meta property="article:tag" content="kubernetes"/>
+<meta property="article:tag" content="experiment"/>
+<meta property="article:tag" content="teaching"/>
+<meta property="og:image" content="https://nimbinatus.com/static/avatar.png">
+
+  <title>Yet Another Blog &ndash; Introducing the Broken k8s Project</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://nimbinatus.com">
+        <img src="https://nimbinatus.com/static/avatar.png" alt="Yet Another Blog" title="Yet Another Blog">
+      </a>
+      <h1><a href="https://nimbinatus.com">Yet Another Blog</a></h1>
+
+<small>A Dev Advocate walks into a bar...</small>
+    <hr/>
+<p>Developer and DevOps Advocate @Pulumi</p>    <hr/>
+      <nav>
+        <ul class="list">
+
+          <li><a href="https://speaking.nimbinatus.com">Speaking</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/lauraasantamaria" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/nimbinatus" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/nimbinatus" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="https://nimbinatus.com">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="https://nimbinatus.com/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="broken-k8s-intro">Introducing the Broken k8s Project</h1>
+    <p>
+          Posted on Tue 22 October 2019 in <a href="https://nimbinatus.com/category/k8s.html">k8s</a>
+
+
+        &#8226; 3 min read
+    </p>
+  </header>
+
+
+  <div>
+    <p>One of the most common things I see with people new to development or devops is a lack of resources for them to learn good troubleshooting tactics on their own in a near-real-life environment. There are great tutorials, but I haven't been able to find a good, free sandbox filled with deliberately broken environments that need fixing outside of a corporate environment. Sure, you learn tactics on the job or on your own system when you accidentally bork it, but those scenarios can be very frustrating for a beginner who doesn't even know where to start to find the cause of why their systems aren't working when there are multiple reasons it's broken. Most of the time, you have to have a more experienced mentor to help debug, and those mentors can be hard to find for some folks in the community due to factors such as geography, time, or biases against them for one reason or another. In addition, containerized systems have the added drawback of being ephemeral, making it harder for new folks to figure out just how to begin when they don't even know how to access the broken system in the first place.</p>
+<p>As a result, I thought it would be great to take a number of systems and just start deliberately breaking them in specific ways that I often see when dealing with broken systems and then providing them to the community as a set of stepping stones to debug more and more complex Kubernetes systems. So I started with a minikube build that is fairly bare bones to set a control environment. <a href="https://github.com/nimbinatus/broken-k8s/tree/master/base-k8s">This environment</a> is mainly to ensure that the user's system works and is configured properly. Then I started tweaking things here and there to break the system in fairly straight-forward ways to give people a chance to get some easy wins. In addition, these easier systems can teach a new user to hunt for problems in specific places, isolating the noise in the logs to surface common errors and their symptoms in a way that will be recognizable for the next set of systems. Each system lives in its own namespace on minikube to avoid cross-contamination by accident. Next, I aim to build out complex systems, make some attempts at breaking them in multiple ways to get a new person used to the idea that solutions are almost always not perfect, and introduce some variability into the mix, as well. Hopefully, building a set of troubleshooting tutorial sandboxes in this pyramid-like fashion will teach good practices and hone troubleshooting skills before those skills are truly needed.</p>
+<p>I'm mainly posting about this idea to ask for help, even if it's just sharing <a href="https://twitter.com/nimbinatus/status/1186743502996041728">the tweet</a> I'm sending out with this post or sharing this repo with people you know. I've started on building some systems, but I know I haven't seen everything out there, and I know there's people with a lot more experience than me. The GitHub repo I started, <a href="https://github.com/nimbinatus/broken-k8s">https://github.com/nimbinatus/broken-k8s</a>, is open to the public, open sourced with an MIT license, and open to contributions, including an initial contributor's guide on what should be in each broken system's directory.</p>
+<p>Join me in making the devops world a bit easier to break into. I'd love your help.</p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://nimbinatus.com/tag/kubernetes.html">kubernetes</a>
+      <a href="https://nimbinatus.com/tag/experiment.html">experiment</a>
+      <a href="https://nimbinatus.com/tag/teaching.html">teaching</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="https://nimbinatus.com/2019/10/21/deep-dive-python-logging/" title="A First Dive into Python Logging">
+      <i class="fa fa-angle-left"></i>     Previous Post
+
+    </a>
+    <a class="btn float-right" href="https://nimbinatus.com/2019/11/04/working-within-imposter-syndrome/" title="Working Within Imposter Syndrome">
+          Next Post
+ <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; Laura A Santamaria 2019</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Yet Another Blog ",
+  "url" : "https://nimbinatus.com",
+  "image": "https://nimbinatus.com/static/avatar.png",
+  "description": "A Dev Advocate walks into a bar..."
+}
+</script>
+
+</body>
+</html>

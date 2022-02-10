@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/stylesheet/style.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/pygments/github.min.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/fontawesome.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/brands.css">
+  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/solid.css">
+
+
+    <link href="https://nimbinatus.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Yet Another Blog Atom">
+
+
+    <link rel="shortcut icon" href="https://nimbinatus.com/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://nimbinatus.com/static/favicon.ico" type="image/x-icon">
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-150583051-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-150583051-1');
+</script>
+<!-- End GA -->
+
+<meta name="author" content="Laura Santamaria" />
+<meta name="description" content="As part of a workshop I&#39;m preparing for, I decided to do a deep dive into Python&#39;s built-in logging module from the Python Standard Library. I always had just used the module without thinking too heavily about how it was put together or how it worked. import logging and then …" />
+<meta name="keywords" content="logging, python, deep-dive">
+
+<meta property="og:site_name" content="Yet Another Blog"/>
+<meta property="og:title" content="A First Dive into Python Logging"/>
+<meta property="og:description" content="As part of a workshop I&#39;m preparing for, I decided to do a deep dive into Python&#39;s built-in logging module from the Python Standard Library. I always had just used the module without thinking too heavily about how it was put together or how it worked. import logging and then …"/>
+<meta property="og:locale" content="en_US"/>
+<meta property="og:url" content="https://nimbinatus.com/2019/10/21/deep-dive-python-logging/"/>
+<meta property="og:type" content="article"/>
+<meta property="article:published_time" content="2019-10-21 00:00:00-05:00"/>
+<meta property="article:modified_time" content=""/>
+<meta property="article:author" content="https://nimbinatus.com/author/laura-santamaria.html">
+<meta property="article:section" content="logs"/>
+<meta property="article:tag" content="logging"/>
+<meta property="article:tag" content="python"/>
+<meta property="article:tag" content="deep-dive"/>
+<meta property="og:image" content="https://nimbinatus.com/static/avatar.png">
+
+  <title>Yet Another Blog &ndash; A First Dive into Python Logging</title>
+
+</head>
+<body>
+  <aside>
+    <div>
+      <a href="https://nimbinatus.com">
+        <img src="https://nimbinatus.com/static/avatar.png" alt="Yet Another Blog" title="Yet Another Blog">
+      </a>
+      <h1><a href="https://nimbinatus.com">Yet Another Blog</a></h1>
+
+<small>A Dev Advocate walks into a bar...</small>
+    <hr/>
+<p>Developer and DevOps Advocate @Pulumi</p>    <hr/>
+      <nav>
+        <ul class="list">
+
+          <li><a href="https://speaking.nimbinatus.com">Speaking</a></li>
+          <li><a href="/archives.html">Archives</a></li>
+        </ul>
+      </nav>
+
+      <ul class="social">
+          <li>
+            <a  class="sc-linkedin" href="https://www.linkedin.com/in/lauraasantamaria" target="_blank">
+            <i class="fab fa-linkedin">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-twitter" href="https://twitter.com/nimbinatus" target="_blank">
+            <i class="fab fa-twitter">
+            </i>
+          </a></li>
+          <li>
+            <a  class="sc-github" href="https://github.com/nimbinatus" target="_blank">
+            <i class="fab fa-github">
+            </i>
+          </a></li>
+      </ul>
+    </div>
+
+
+  </aside>
+  <main>
+
+    <nav>
+      <a href="https://nimbinatus.com">    Home
+</a>
+
+      <a href="/archives.html">Archives</a>
+      <a href="/categories.html">Categories</a>
+      <a href="/tags.html">Tags</a>
+
+      <a href="https://nimbinatus.com/feeds/all.atom.xml">    Atom
+</a>
+
+    </nav>
+
+<article class="single">
+  <header>
+      
+    <h1 id="deep-dive-python-logging">A First Dive into Python Logging</h1>
+    <p>
+          Posted on Mon 21 October 2019 in <a href="https://nimbinatus.com/category/logs.html">logs</a>
+
+
+        &#8226; 5 min read
+    </p>
+  </header>
+
+
+  <div>
+    <p>As part of a workshop I'm preparing for, I decided to do a deep dive into Python's built-in logging module from the Python Standard Library. I always had just used the module without thinking too heavily about how it was put together or how it worked. <code>import logging</code> and then away I went. Well, that's about to change, and I thought you might enjoy coming along for the ride. This post will go down into some of the module, especially the bits and thoughts that aren't detailed in the library reference, but I'm sure I'll miss spots along the way. We'll come back to it eventually!</p>
+<p>The Python standard logging module makes the basics of logging easy for a developer. Import the module, then use the built-in error levels to send messages to standard out or standard error (<code>stdout</code> or <code>stderr</code>). The error levels are <code>debug</code>, <code>info</code>, <code>warning</code>, <code>error</code>, and <code>critical</code>. Pretty simple, pretty obvious&emdash;just the reason that I love Python. As you might expect from a logging system, the debug and info levels are suppressed by default. Python also allows you to configure the module to send those lower levels through direct changes in the Python interpreter if you're calling your script in the interpreter, through a command-line argument, or through a config file you've generated yourself. Python, like many other languages, doesn't tell you what to use each logging level for. It doesn't decide that for you. Knowing what to send to where at which level is an art in and of itself as many an ops or devops person would tell you after they've seen overly verbose logs and nearly non-existent logs. Perhaps I'll dive into the different logging levels in general in a different post.</p>
+<p>The module is really made of four main classes: loggers, handlers, filters, and formatters. Think of handlers as the orchestration layer, with loggers doing the actual interaction, filters doing the job of deciding what to send to the handlers, and formatters generating the strings to send on to the handlers. There are as many handlers as there are destinations for your logs, from <code>stdout</code> and <code>stderr</code> to files to cloud logging providers. Logger objects can be created in a hierarchy of loggers, meaning you could create a logger for a parent class, for example, then have loggers for each child class that inherits from that parent logger <em>and</em> propagates logs back up the chain through the handlers. That sets you up to use filters and send logs to different places based on the handlers. Filters can be attached to loggers or handlers, meaning they are explicitly added to one or the other through a method call on the logger or handler. One interesting attribute of filters is that you can use them to add context details to a log line, which is interesting to me due to the structured logging formats that we'll see in a minute. Finally, formatters take in <code>LogRecord</code> objects and generate the final message structure you want to send to a handler. While these messages are often strings, you can send dictionaries or objects, too.</p>
+<p>Some other, less known bits from the logging module include <code>LogRecord</code> and <code>LoggerAdapter</code>. The <code>LogRecord</code> class is the actual object that holds all of the pertinent log data. The class comes with a number of parameters that are already preconfigured that the standard logging module recognizes. However, you can also modify the base log record factory or create a new one to use in addition to the base one to create more attributes for the log record to hold. That's really important for structured logging because good structured logs tell the system exactly what it needs to know without being too large of an object to parse. So rather than having extraneous data that you might not need in one app versus another, you can target the data that you actually want that will be helpful. Reducing noise while providing actionable information is always helpful. The <code>LoggerAdapter</code>, on the other hand, can help you add context to your logs, which means you can send stuff like network data or other details that your logger might not necessarily collect on its own. I think the basic idea is that you would use an adapter rather than a filter in cases where you might need to send data once with a specific log line in a specific section of your code so you don't have to write a whole new filter just for that tiny use case.</p>
+<p>Now, the workshop I'm working on is about structured logging. I can certainly get into <strong>why</strong> we should use structured logs, but I'd rather stick to the deep dive on Python specifically here. In reality, yes, you can implement structured logs yourself in Python, and the Python maintainers have added the how-to to their documentation as a <a href="https://docs.python.org/3/howto/logging-cookbook.html#implementing-structured-logging">cookbook</a>. There are also libraries now that can help you implement structured logs. An example is <a href="http://www.structlog.org/en/stable/">structlog</a>, a Python library. As always with Python, loggers, handlers, filters, formatters, log records, and adapters are all objects. That means they all have attributes and methods. You can modify any object in the pipeline to match your specific need, including to add structured log formats. I've been playing with structlog, and it seems like a simple plug-and-play setup if you don't feel like coding the necessary bits yourself. However, I'm of the camp where you build it yourself if it's simple, mainly because of the <a href="https://www.theregister.co.uk/2016/03/23/npm_left_pad_chaos/">leftpad controversy</a> from the NPM/Node.JS world a while ago. It's really up to you to see just how complicated of a system you need for your logs.</p>
+<p>Interested in learning what I've found in general about logging more useful data and give it a shot yourself? You can join me at DeveloperWeek Austin 2019 for <a href="https://sched.co/VXUx">my workshop</a> if you're in the area, or you can get a sneak preview if you're early or just enjoy the content on the <a href="https://github.com/nimbinatus/log-better">workshop repo</a>. I'll likely be working on it right up until the end of October 2019, and then probably tweaking it based on feedback, so enjoy! Feel free to also join the conversation on my <a href="https://twitter.com/nimbinatus">Twitter account</a>. </p>
+  </div>
+  <div class="tag-cloud">
+    <p>
+      <a href="https://nimbinatus.com/tag/logging.html">logging</a>
+      <a href="https://nimbinatus.com/tag/python.html">python</a>
+      <a href="https://nimbinatus.com/tag/deep-dive.html">deep-dive</a>
+    </p>
+  </div>
+
+
+  <div class="neighbors">
+    <a class="btn float-left" href="https://nimbinatus.com/2019/09/28/pelican-and-ghpages/" title="Pelican and GitHub Pages">
+      <i class="fa fa-angle-left"></i>     Previous Post
+
+    </a>
+    <a class="btn float-right" href="https://nimbinatus.com/2019/10/22/broken-k8s-intro/" title="Introducing the Broken k8s Project">
+          Next Post
+ <i class="fa fa-angle-right"></i>
+    </a>
+  </div>
+
+
+
+</article>
+
+    <footer>
+<p>&copy; Laura A Santamaria 2019</p>
+<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+</p>    </footer>
+  </main>
+
+
+
+
+<script type="application/ld+json">
+{
+  "@context" : "http://schema.org",
+  "@type" : "Blog",
+  "name": " Yet Another Blog ",
+  "url" : "https://nimbinatus.com",
+  "image": "https://nimbinatus.com/static/avatar.png",
+  "description": "A Dev Advocate walks into a bar..."
+}
+</script>
+
+</body>
+</html>
