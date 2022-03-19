@@ -4,7 +4,7 @@ author: Laura Santamaria
 category: devrel
 slug: devrel-bnb-analogy 
 date: 19 March 2022
-tags: devrel, avocados, dev-advocate
+tags: avocados, dev-advocate, analogy
 status: published
 ---
 
