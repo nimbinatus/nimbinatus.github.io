@@ -26,7 +26,7 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Biography
-BIO = "Developer and DevOps Advocate @Pulumi"
+BIO = "Developer Advocate @Pulumi"
 PROFILE_IMAGE = 'avatar.png'
 
 # Social widget
@@ -68,7 +68,7 @@ JINJA_ENVIRONMENT = {
     ]
 }
 
-COPYRIGHT_YEAR = 2019
+COPYRIGHT_YEAR = 2022
 COPYRIGHT_NAME = 'Laura A Santamaria'
 
 MAIN_MENU = True
