@@ -8,11 +8,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="" />
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,400;0,700;1,400&family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/stylesheet/style.min.css">
 
-  <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/pygments/github.min.css">
+
+    <link id="pygments-light-theme" rel="stylesheet" type="text/css"
+          href="https://nimbinatus.com/theme/pygments/github.min.css">
+
+
   <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/fontawesome.css">
   <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/brands.css">
   <link rel="stylesheet" type="text/css" href="https://nimbinatus.com/theme/font-awesome/css/solid.css">
@@ -39,6 +43,7 @@
 <meta name="description" content="I thought I&#39;d throw together a quick post on using Pelican with GitHub Pages and GitHub Actions. I decided to use a Python-based static-site generator instead of Jekyll because (a) I love Python and (2) Ruby and I aren&#39;t always on the best of terms. In addition, I wanted a …" />
 <meta name="keywords" content="blog, meta, pelican, github">
 
+
 <meta property="og:site_name" content="Yet Another Blog"/>
 <meta property="og:title" content="Pelican and GitHub Pages"/>
 <meta property="og:description" content="I thought I&#39;d throw together a quick post on using Pelican with GitHub Pages and GitHub Actions. I decided to use a Python-based static-site generator instead of Jekyll because (a) I love Python and (2) Ruby and I aren&#39;t always on the best of terms. In addition, I wanted a …"/>
@@ -58,58 +63,66 @@
   <title>Yet Another Blog &ndash; Pelican and GitHub Pages</title>
 
 </head>
-<body>
+<body class="light-theme">
   <aside>
     <div>
       <a href="https://nimbinatus.com">
         <img src="https://nimbinatus.com/static/avatar.png" alt="Yet Another Blog" title="Yet Another Blog">
       </a>
-      <h1><a href="https://nimbinatus.com">Yet Another Blog</a></h1>
+
+      <h1>
+        <a href="https://nimbinatus.com">Yet Another Blog</a>
+      </h1>
 
 <small>A Dev Advocate walks into a bar...</small>
-    <hr/>
-<p>Developer and DevOps Advocate @Pulumi</p>    <hr/>
+      <hr/>
+<p>Developer Advocate @Pulumi</p>      <hr/>
+
+
       <nav>
         <ul class="list">
 
-          <li><a href="https://speaking.nimbinatus.com">Speaking</a></li>
-          <li><a href="/archives.html">Archives</a></li>
+
+
+            <li>
+              <a target="_self" href="https://speaking.nimbinatus.com" >Speaking</a>
+            </li>
+            <li>
+              <a target="_self" href="/archives.html" >Archives</a>
+            </li>
         </ul>
       </nav>
 
       <ul class="social">
           <li>
             <a  class="sc-linkedin" href="https://www.linkedin.com/in/lauraasantamaria" target="_blank">
-            <i class="fab fa-linkedin">
-            </i>
-          </a></li>
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </li>
           <li>
             <a  class="sc-twitter" href="https://twitter.com/nimbinatus" target="_blank">
-            <i class="fab fa-twitter">
-            </i>
-          </a></li>
+              <i class="fab fa-twitter"></i>
+            </a>
+          </li>
           <li>
             <a  class="sc-github" href="https://github.com/nimbinatus" target="_blank">
-            <i class="fab fa-github">
-            </i>
-          </a></li>
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
       </ul>
     </div>
-
 
   </aside>
   <main>
 
     <nav>
-      <a href="https://nimbinatus.com">    Home
-</a>
+      <a href="https://nimbinatus.com">Home</a>
 
       <a href="/archives.html">Archives</a>
       <a href="/categories.html">Categories</a>
       <a href="/tags.html">Tags</a>
 
-      <a href="https://nimbinatus.com/feeds/all.atom.xml">    Atom
-</a>
+      <a href="https://nimbinatus.com/feeds/all.atom.xml">Atom</a>
 
     </nav>
 
@@ -118,8 +131,7 @@
       
     <h1 id="pelican-and-ghpages">Pelican and GitHub Pages</h1>
     <p>
-          Posted on Sat 28 September 2019 in <a href="https://nimbinatus.com/category/meta-stuff.html">meta-stuff</a>
-
+      Posted on Sat 28 September 2019 in <a href="https://nimbinatus.com/category/meta-stuff.html">meta-stuff</a>
 
         &#8226; 3 min read
     </p>
@@ -192,12 +204,10 @@
 
   <div class="neighbors">
     <a class="btn float-left" href="https://nimbinatus.com/2019/09/25/complexity-of-logging/" title="Complexity of Logging">
-      <i class="fa fa-angle-left"></i>     Previous Post
-
+      <i class="fa fa-angle-left"></i> Previous Post
     </a>
     <a class="btn float-right" href="https://nimbinatus.com/2019/10/21/deep-dive-python-logging/" title="A First Dive into Python Logging">
-          Next Post
- <i class="fa fa-angle-right"></i>
+      Next Post <i class="fa fa-angle-right"></i>
     </a>
   </div>
 
@@ -206,8 +216,9 @@
 </article>
 
     <footer>
-<p>&copy; Laura A Santamaria 2019</p>
-<p>    Powered by <a href="http://getpelican.com" target="_blank">Pelican</a> - <a href="https://github.com/alexandrevicenzi/flex" target="_blank">Flex</a> theme by <a href="http://alexandrevicenzi.com" target="_blank">Alexandre Vicenzi</a>
+<p>&copy; 2022 Laura A Santamaria</p>
+<p>
+Built with <a href="http://getpelican.com" target="_blank">Pelican</a> using <a href="http://bit.ly/flex-pelican" target="_blank">Flex</a> theme
 </p>    </footer>
   </main>
 
@@ -224,6 +235,7 @@
   "description": "A Dev Advocate walks into a bar..."
 }
 </script>
+
 
 </body>
 </html>
