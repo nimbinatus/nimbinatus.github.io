@@ -77,5 +77,7 @@ MENUITEMS = (('Archives', '/archives.html'),
              ('Categories', '/categories.html'),
              ('Tags', '/tags.html'),)
 
-LINKS = (('Speaking', 'https://speaking.nimbinatus.com'),
+LINKS = (('Linktree', 'https://linktr.ee/nimbinatus'),
+         ('Speaking', 'https://speaking.nimbinatus.com'),
+         ('YouTube - Quick Bites', 'https://youtube.com/playlist?list=PLyy8Vx2ZoWlohOiedbaQqT5xYRkcDsm10'),
          ('Archives', '/archives.html'),)
