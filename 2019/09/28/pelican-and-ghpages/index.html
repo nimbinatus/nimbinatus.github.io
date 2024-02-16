@@ -76,7 +76,7 @@
 
 <small>A Dev Advocate walks into a bar...</small>
       <hr/>
-<p>Developer Advocate @Pulumi</p>      <hr/>
+<p>Lead Developer Advocate @Dell</p>      <hr/>
 
 
       <nav>
@@ -149,50 +149,50 @@
 <p>I decided to use a Python-based static-site generator instead of Jekyll because (a) I love Python and (2) Ruby and I aren't always on the best of terms. In addition, I wanted a system that I could really dig into and throw plugins together whenever I wanted. In another job, I managed a custom Jekyll system with plugins and hooks that I built myself, but I know doing that sort of thing in Ruby would take me a lot longer than just knocking it together in Python. Perhaps in the future I'll build the site with a different system depending on how complex it gets, but a simple static-site generator really has a lot of appeal for something this simple. I chose Pelican mainly because I wanted to figure out how it worked; nothing Earth-shattering there.</p>
 <p>The biggest challenge I had was automating publication of the site to GitHub Pages. I wanted to be able to write a post on my phone on a plane and be able to publish that post from my phone without the ability to build the site locally. I certainly could have done that with a more traditional content management system (CMS) like Ghost or (<em>shudder</em>) Wordpress. However, there was an appealing challenge in making it work, and I admit to jumping at the chance to try GitHub Actions. So I started getting the site in order locally, and then I joined the beta for Actions to get started.</p>
 <p>First, I needed to trigger a build when a push goes the right branch. I decided to have a different host branch for the source code of the site since user pages on GitHub require publishing from master in a specially named repo. So my workflow had to trigger from a different branch:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">on</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">push</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span>
 </code></pre></div>
 
 <p>I decided on an Ubuntu image to build on as I run Ubuntu at home, and therefore the build should be fairly close to my local builder. Everything from here on are job steps.</p>
 <p>Next, I had to check out that specific branch. I borrowed an Action to make that happen:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v1</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v1</span>
 </code></pre></div>
 
 <p>Then, the workflow needed to set up the overall environment:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python 3.7</span><span class="w"></span>
-<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v1</span><span class="w"></span>
-<span class="w">      </span><span class="nt">with</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.7</span><span class="w"></span>
-<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span><span class="w"></span>
-<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
-<span class="w">        </span><span class="no">python -m pip install --upgrade pip</span><span class="w"></span>
-<span class="w">        </span><span class="no">pip install -r requirements.txt</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python 3.7</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v1</span>
+<span class="w">      </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.7</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">python -m pip install --upgrade pip</span>
+<span class="w">        </span><span class="no">pip install -r requirements.txt</span>
 </code></pre></div>
 
 <p>Next, a make command! The Makefile ensures that I don't have to remember all of my options I run, and that means a more consistent build when I <em>do</em> run it on my local system.</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build the prod site</span><span class="w"></span>
-<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
-<span class="w">        </span><span class="no">make publish</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build the prod site</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">make publish</span>
 </code></pre></div>
 
 <p>This next bit is really, really important for publishing to GitHub Pages, and it's a bit silly of a step, really. You need to stop Jekyll from trying to parse your new raw HTML files and failing. The way to do that on GitHub Pages is an empty file named <code>.nojekyll</code>. So, a quick touch command to the designated output directory for the publish build before moving it to the master branch, and we're ready for publication:</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add nojekyll</span><span class="w"></span>
-<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w"></span>
-<span class="w">        </span><span class="no">touch ./output/.nojekyll</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Add nojekyll</span>
+<span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">touch ./output/.nojekyll</span>
 </code></pre></div>
 
 <p>Finally, deployment time! We just need to send the raw HTML from the output directory to the master branch. However, I had to find a good Action to do it because I have a custom domain. All of the other Actions I tried actually broke my custom domain, so this one actually adds the custom domain designation every time. The creator (see the <code>uses</code> value) made some clear docs around the Action, too, which makes me very happy.</p>
-<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy to GitHub Pages</span><span class="w"></span>
-<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JamesIves/github-pages-deploy-action@master</span><span class="w"></span>
-<span class="w">      </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success()</span><span class="w"></span>
-<span class="w">      </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">        </span><span class="nt">ACCESS_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GH_PAT }}</span><span class="w"></span>
-<span class="w">        </span><span class="nt">BASE_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span><span class="w"> </span><span class="c1"># The branch the action should deploy from.</span><span class="w"></span>
-<span class="w">        </span><span class="nt">BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span><span class="w"> </span><span class="c1"># The branch the action should deploy to.</span><span class="w"></span>
-<span class="w">        </span><span class="nt">CNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nimbinatus.com</span><span class="w"></span>
-<span class="w">        </span><span class="nt">FOLDER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span><span class="w"> </span><span class="c1"># The folder the action should deploy.</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy to GitHub Pages</span>
+<span class="w">      </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">JamesIves/github-pages-deploy-action@master</span>
+<span class="w">      </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">success()</span>
+<span class="w">      </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">ACCESS_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GH_PAT }}</span>
+<span class="w">        </span><span class="nt">BASE_BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">source</span><span class="w"> </span><span class="c1"># The branch the action should deploy from.</span>
+<span class="w">        </span><span class="nt">BRANCH</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span><span class="w"> </span><span class="c1"># The branch the action should deploy to.</span>
+<span class="w">        </span><span class="nt">CNAME</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nimbinatus.com</span>
+<span class="w">        </span><span class="nt">FOLDER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">output</span><span class="w"> </span><span class="c1"># The folder the action should deploy.</span>
 </code></pre></div>
 
 <p>So there you have it. I just push changes like this post to my source branch, and GitHub Actions publishes the whole thing for me. And all on the back of Python, which makes me happy.</p>
