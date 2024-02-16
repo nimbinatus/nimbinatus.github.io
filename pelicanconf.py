@@ -26,7 +26,7 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Biography
-BIO = "Developer Advocate @Pulumi"
+BIO = "Lead Developer Advocate @Dell"
 PROFILE_IMAGE = 'avatar.png'
 
 # Social widget
