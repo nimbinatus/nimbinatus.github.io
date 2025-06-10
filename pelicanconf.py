@@ -26,13 +26,12 @@ AUTHOR_FEED_ATOM = None
 AUTHOR_FEED_RSS = None
 
 # Biography
-BIO = "Lead Developer Advocate @Dell"
+BIO = "Open Source Community Architect @ Red Hat"
 PROFILE_IMAGE = 'avatar.png'
 
 # Social widget
 SOCIAL = (
     ('linkedin', 'https://www.linkedin.com/in/lauraasantamaria'),
-    ('twitter', 'https://twitter.com/nimbinatus'),
     ('github', 'https://github.com/nimbinatus')
 )
 
